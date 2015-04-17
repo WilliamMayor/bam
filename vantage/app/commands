@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -eo pipefail
+shopt -s nullglob
+
+case "$1" in
+    fetch)
+        docker run \
+            --env-file "$VG_ENV_FILE" \
+            --volume /vagrant:/usr/src/app \
+            vg_app python fetch.py
+        exit $VG_VALID_EXIT
+        ;;
+    shell)
+        docker run \
+            --env-file "$VG_ENV_FILE" \
+            --interactive \
+            --tty \
+            --volume /vagrant:/usr/src/app \
+            vg_app bash
+        exit $VG_VALID_EXIT
+        ;;
+    help)
+        echo "    app fetch - Fetch account details"
+        ;;
+    *)
+        exit $VG_NOT_IMPLEMENTED_EXIT
+        ;;
+esac

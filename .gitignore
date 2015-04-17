@@ -1,0 +1,8 @@
+.vagrant
+accounts.py
+*.pyc
+*.pyo
+
+.env
+
+accounts.db
