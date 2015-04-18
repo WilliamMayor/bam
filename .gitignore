@@ -2,7 +2,6 @@
 accounts.py
 *.pyc
 *.pyo
-
+nationwide-*.png
 .env
-
 accounts.db
