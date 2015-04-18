@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
+import pushover
+
 
 class Record(object):
 
@@ -62,11 +64,24 @@ class NationwideBot(Bot):
         return records
 
     def _fetch(self):
-        self.driver.get(self.url)
-        self.answer_customer_number()
-        self.answer_memorable_data()
-        self.answer_pass_number_digit('SubmittedPassnumber1')
-        self.answer_pass_number_digit('SubmittedPassnumber2')
-        self.answer_pass_number_digit('SubmittedPassnumber3')
-        self.driver.find_element_by_id('Continue').click()
-        return self.find_records()
+        try:
+            self.driver.get(self.url)
+            self.driver.save_screenshot('nationwide-0.png')
+            self.answer_customer_number()
+            self.driver.save_screenshot('nationwide-1.png')
+            self.driver.find_element_by_id('logInWithMemDataLink').click()
+            self.driver.save_screenshot('nationwide-2.png')
+            self.answer_memorable_data()
+            self.answer_pass_number_digit('SubmittedPassnumber1')
+            self.answer_pass_number_digit('SubmittedPassnumber2')
+            self.answer_pass_number_digit('SubmittedPassnumber3')
+            self.driver.save_screenshot('nationwide-3.png')
+            self.driver.find_element_by_id('Continue').click()
+            self.driver.save_screenshot('nationwide-4.png')
+            return self.find_records()
+        except:
+            self.driver.save_screenshot('nationwide-error.png')
+            pushover.send_message(
+                self.login.person,
+                title='Error', message='Error collecting Nationwide data')
+            raise

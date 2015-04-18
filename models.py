@@ -18,7 +18,7 @@ class Person(Base):
 
     def should_send_report(self):
         today = datetime.date.today()
-        today = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][today]
+        today = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][today.weekday()]
         return today in self.report_frequency
 
     def should_send_alert(self, record):
