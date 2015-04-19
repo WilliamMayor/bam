@@ -57,9 +57,10 @@ class NationwideBot(Bot):
             name = account_row.find_element_by_css_selector(
                 'b.acDesc').text
             balance = account_row.find_element_by_css_selector(
-                '.bal-details strong').text[1:]
-            balance = float(balance.replace(',', ''))
-            pence = int(100 * balance)
+                '.bal-details strong').text
+            balance = balance.replace(',', '')
+            balance = balance.replace('£', '')
+            pence = int(100 * float(balance))
             records.append(Record(name, pence))
         return records
 
