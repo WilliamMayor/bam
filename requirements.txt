@@ -1,3 +1,4 @@
 selenium==2.45.0
 SQLAlchemy==1.0.0
 requests==2.2.1
+sandman==0.9.8

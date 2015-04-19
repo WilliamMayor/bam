@@ -1,0 +1,5 @@
+docker build -t bam .
+
+docker run --env-file=.env --volume=/vagrant:/usr/src/app bam
+
+docker run --env-file=.env --volume=/vagrant:/usr/src/app -d -p 8080:8080 bam sandmanctl sqlite:////usr/src/app/accounts.db
