@@ -14,6 +14,6 @@ session = sessionmaker(bind=engine)()
 if __name__ == '__main__':
     for person in session.query(Person).all():
         for login in person.logins:
-            records = login.bot.fetch()
             if person.should_send_report():
+                records = login.bot.fetch()
                 pushover.send_report(person, records)
