@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
@@ -20,15 +20,6 @@ class Person(Base):
         today = datetime.date.today()
         today = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'][today.weekday()]
         return today in self.report_frequency
-
-    def should_send_alert(self, record):
-        for alert in self.alerts:
-            should_send = all([
-                alert.account_name == record.account_name,
-                alert.balance >= record.balance])
-            if should_send:
-                return True
-        return False
 
 
 class Login(Base):
@@ -58,17 +49,3 @@ class NationwideLogin(Login):
     @property
     def bot(self):
         return NationwideBot(self)
-
-
-class Alert(Base):
-    __tablename__ = 'alert'
-    id = Column(Integer, primary_key=True)
-    account_name = Column(String)
-    balance = Column(Integer)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship('Person', backref=backref('alerts'))
-
-
-def create_all():
-    engine = create_engine('sqlite:///accounts.db')
-    Base.metadata.create_all(engine)

@@ -25,7 +25,7 @@ class Bot(object):
 
     def fetch(self):
         with self as s:
-            return s._fetch()
+            return s.run_fetch()
 
 
 class NationwideBot(Bot):
@@ -66,45 +66,42 @@ class NationwideBot(Bot):
             records.append(Record(name, pence))
         return records
 
-    def _fetch(self):
+    def run_login(self):
+        self.driver.get(self.url)
+        self.driver.save_screenshot('1.png')
+        self.answer_customer_number()
+        self.driver.save_screenshot('2.png')
+        self.driver.find_element_by_id('logInWithMemDataLink').click()
+        self.driver.save_screenshot('3.png')
+        self.answer_memorable_data()
+        self.driver.save_screenshot('4.png')
+        self.answer_pass_number_digit('SubmittedPassnumber1')
+        self.answer_pass_number_digit('SubmittedPassnumber2')
+        self.answer_pass_number_digit('SubmittedPassnumber3')
+        self.driver.save_screenshot('5.png')
+        self.driver.find_element_by_id('Continue').click()
+        self.driver.save_screenshot('6.png')
+        continue_links = self.driver.find_elements_by_link_text(
+            'Continue with Internet Banking')
+        if continue_links:
+            continue_links[0].click()
+            self.driver.save_screenshot('6a.png')
+
+    def run_fetch(self):
         try:
-            self.driver.get(self.url)
-            self.driver.save_screenshot(
-                '%s-nationwide-0.png' % self.login.person.name)
-            self.answer_customer_number()
-            self.driver.save_screenshot(
-                '%s-nationwide-1.png' % self.login.person.name)
-            self.driver.find_element_by_id('logInWithMemDataLink').click()
-            self.driver.save_screenshot(
-                '%s-nationwide-2.png' % self.login.person.name)
-            self.answer_memorable_data()
-            self.answer_pass_number_digit('SubmittedPassnumber1')
-            self.answer_pass_number_digit('SubmittedPassnumber2')
-            self.answer_pass_number_digit('SubmittedPassnumber3')
-            self.driver.save_screenshot(
-                '%s-nationwide-3.png' % self.login.person.name)
-            self.driver.find_element_by_id('Continue').click()
-            self.driver.save_screenshot(
-                '%s-nationwide-4.png' % self.login.person.name)
-            continue_links = self.driver.find_elements_by_link_text(
-                'Continue with Internet Banking')
-            if continue_links:
-                continue_links[0].click()
-                self.driver.save_screenshot(
-                    '%s-nationwide-5.png' % self.login.person.name)
+            self.run_login()
             records = self.find_records()
             if not records:
                 raise Exception('No records found')
             return records
         except:
-            self.driver.save_screenshot('nationwide-error.png')
+            self.driver.save_screenshot('error.png')
             pushover.send_message(
                 self.login.person,
-                title='Error', message='Error collecting Nationwide data')
+                title='Error',
+                message='Error collecting Nationwide data')
             raise
         finally:
-            self.driver.get(('https://onlinebanking.nationwide.co.uk/'
-                             'AccessManagement/Logout/Logout'))
+            self.driver.get('https://onlinebanking.nationwide.co.uk/AccessManagement/Logout/Logout')
             Alert(self.driver).accept()
-            self.driver.save_screenshot(
-                '%s-nationwide-6.png' % self.login.person.name)
+            self.driver.save_screenshot('7.png')

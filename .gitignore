@@ -1,7 +1,7 @@
-.vagrant
-accounts.py
 *.pyc
 *.pyo
-nationwide-*.png
+*.png
+
+.vagrant
 .env
-accounts.db
+demo.dump
