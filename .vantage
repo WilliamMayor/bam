@@ -1,0 +1,2 @@
+VG_DEFAULT_ENV=/vagrant/.env/default
+VG_PLUGIN_PATH=/vagrant/vantage

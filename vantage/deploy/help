@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+
+switch "$argv"
+    case 'summary'
+        echo "  deploy - Deploy app"
+    case '*'
+        echo "\
+deploy
+    Deploy latest committed changes to dokku on QueenOfHearts"
+end

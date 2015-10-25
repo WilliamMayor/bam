@@ -1,0 +1,24 @@
+#!/usr/bin/env fish
+
+set $code 1
+
+echo "Building app container"
+docker build --tag vantage/app "$VG_APP_DIR" > /dev/null ^ /dev/null
+
+if test $status -ne 0
+    echo "Couldn't build app container"
+    exit 1
+end
+
+docker run \
+    --env-file="$VG_ENV_FILE" \
+    --interactive \
+    --tty \
+    --volume="$VG_APP_DIR":/usr/src/app \
+    --net=host \
+    --name vg_shell \
+    vantage/app bash
+set $code $status
+docker rm vg_shell > /dev/null ^ /dev/null
+
+exit $code

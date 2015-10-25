@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+
+switch "$argv"
+    case 'summary'
+        echo "  fetch - Run fetch commands"
+    case '*'
+        echo "\
+fetch
+    Run fetch, collecting bank account details and reporting them"
+end

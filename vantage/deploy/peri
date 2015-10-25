@@ -1,0 +1,7 @@
+#!/usr/bin/env fish
+
+set $code 1
+
+# Git push to dokku
+
+exit $code

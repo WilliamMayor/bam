@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+
+switch "$argv"
+    case 'summary'
+        echo "  admin - Run admin tasks"
+    case '*'
+        echo "\
+admin db init
+    Initialise the DB tables"
+end

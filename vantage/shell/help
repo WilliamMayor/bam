@@ -1,0 +1,10 @@
+#!/usr/bin/env fish
+
+switch "$argv"
+    case 'summary'
+        echo "  shell - Drop into shell"
+    case '*'
+        echo "\
+shell
+    Drop into docker container"
+end
