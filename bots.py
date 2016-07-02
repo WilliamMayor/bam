@@ -68,24 +68,24 @@ class NationwideBot(Bot):
 
     def run_login(self):
         self.driver.get(self.url)
-        # self.driver.save_screenshot('1.png')
+        self.driver.save_screenshot('1.png')
         self.answer_customer_number()
-        # self.driver.save_screenshot('2.png')
+        self.driver.save_screenshot('2.png')
         self.driver.find_element_by_id('logInWithMemDataLink').click()
-        # self.driver.save_screenshot('3.png')
+        self.driver.save_screenshot('3.png')
         self.answer_memorable_data()
-        # self.driver.save_screenshot('4.png')
+        self.driver.save_screenshot('4.png')
         self.answer_pass_number_digit('SubmittedPassnumber1')
         self.answer_pass_number_digit('SubmittedPassnumber2')
         self.answer_pass_number_digit('SubmittedPassnumber3')
-        # self.driver.save_screenshot('5.png')
+        self.driver.save_screenshot('5.png')
         self.driver.find_element_by_id('Continue').click()
-        # self.driver.save_screenshot('6.png')
+        self.driver.save_screenshot('6.png')
         continue_links = self.driver.find_elements_by_link_text(
             'Continue with Internet Banking')
         if continue_links:
             continue_links[0].click()
-            # self.driver.save_screenshot('6a.png')
+            self.driver.save_screenshot('6a.png')
 
     def run_fetch(self):
         try:
@@ -95,7 +95,7 @@ class NationwideBot(Bot):
                 raise Exception('No records found')
             return records
         except:
-            # self.driver.save_screenshot('error.png')
+            self.driver.save_screenshot('error.png')
             pushover.send_message(
                 self.login.person,
                 title='Error',
@@ -104,4 +104,4 @@ class NationwideBot(Bot):
         finally:
             self.driver.get('https://onlinebanking.nationwide.co.uk/AccessManagement/Logout/Logout')
             Alert(self.driver).accept()
-            # self.driver.save_screenshot('7.png')
+            self.driver.save_screenshot('7.png')
