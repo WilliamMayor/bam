@@ -4,4 +4,7 @@
 
 .vagrant
 .env
-demo.dump
+config.py
+asseluser
+.bundle
+asroot
