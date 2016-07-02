@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-set -eo pipefail
-shopt -s nullglob
+set -e
 
-Xvfb $DISPLAY -ac &> /dev/null &
-
-python fetch.py
+/opt/bin/entry_point.sh &
+/usr/bin/python3 /usr/src/app/fetch.py
