@@ -1,20 +1,15 @@
 import datetime
 
-from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
-
 from bots import NationwideBot
 
-Base = declarative_base()
 
+class Person:
 
-class Person(Base):
-    __tablename__ = 'person'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    pushover_key = Column(String)
-    report_frequency = Column(String)
+    def __init__(self, name, pushover_key, report_frequency, logins):
+        self.name = name
+        self.pushover_key = pushover_key
+        self.report_frequency = report_frequency
+        self.logins = logins
 
     def should_send_report(self):
         today = datetime.date.today()
@@ -22,29 +17,12 @@ class Person(Base):
         return today in self.report_frequency
 
 
-class Login(Base):
-    __tablename__ = 'login'
-    id = Column(Integer, primary_key=True)
-    type = Column(String)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship('Person', backref=backref('logins'))
+class NationwideLogin:
 
-    __mapper_args__ = {
-        'polymorphic_identity': 'login',
-        'polymorphic_on': type
-    }
-
-
-class NationwideLogin(Login):
-    __tablename__ = 'nationwide'
-    id = Column(Integer, ForeignKey('login.id'), primary_key=True)
-    customer_number = Column(String)
-    pass_number = Column(String)
-    memorable_data = Column(String)
-
-    __mapper_args__ = {
-        'polymorphic_identity': 'nationwide'
-    }
+    def __init__(self, customer_number, pass_number, memorable_data):
+        self.customer_number = customer_number
+        self.pass_number = pass_number
+        self.memorable_data = memorable_data
 
     @property
     def bot(self):
