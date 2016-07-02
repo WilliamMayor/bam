@@ -16,7 +16,7 @@ class Record(object):
 class Bot(object):
 
     def __enter__(self):
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Chrome()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
